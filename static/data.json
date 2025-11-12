@@ -6,7 +6,7 @@
       "type": "text"
     },
     {
-      "name": "test",
+      "name": "Note",
       "type": "text",
       "required": false
     },
@@ -19,9 +19,9 @@
   "players": [
     {
       "data": [
-        "wasat",
-        "wataewa",
-        "1"
+        "",
+        "",
+        "0"
       ]
     }
   ],

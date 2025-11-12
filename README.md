@@ -1,2 +1,2 @@
-# game-score-board-public
-game-score-board-public
+# game-score-board
+game-score-board

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icon.png') }}">
+    <title>Game Score Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Controls -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title" data-en="Game Score Tracker" data-zh="游戏计分系统">Game Score Tracker</h1>
+                <div class="controls">
+                    <button id="finishGame" class="btn btn-primary" data-en="Finish Game" data-zh="结束游戏">Finish Game</button>
+                    <button id="clearCurrent" class="btn btn-secondary" data-en="Clear Current" data-zh="清空当前">Clear Current</button>
+                    <button id="exportStructure" class="btn btn-secondary" data-en="Export Structure" data-zh="导出结构">Export Structure</button>
+                    <button id="importStructure" class="btn btn-secondary" data-en="Import Structure" data-zh="导入结构">Import Structure</button>
+                    <button id="exportAll" class="btn btn-secondary" data-en="Export All Data" data-zh="导出所有数据">Export All Data</button>
+                    <button id="importAll" class="btn btn-secondary" data-en="Import All Data" data-zh="导入所有数据">Import All Data</button>
+                    <button id="clearAll" class="btn btn-danger" data-en="Clear All Data" data-zh="清空所有数据">Clear All Data</button>
+                    <div class="controls-spacer"></div>
+                    <button id="toggleTheme" class="btn btn-icon" title="Toggle Theme">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <button id="toggleLang" class="btn btn-icon" title="Toggle Language">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Left Column: Game History -->
+            <aside class="history-panel">
+                <div class="panel-header">
+                    <h2 data-en="Game History" data-zh="游戏历史">Game History</h2>
+                    <input type="text" id="historySearch" class="search-input" placeholder="Search games..." data-placeholder-en="Search games..." data-placeholder-zh="搜索游戏...">
+                </div>
+                <div id="historyList" class="history-list"></div>
+            </aside>
+
+            <!-- Center: Score Table -->
+            <main class="score-panel">
+                <!-- AI Evaluation Panel -->
+                <div class="ai-panel">
+                    <div class="section-header">
+                        <h2 data-en="AI Game Analysis" data-zh="AI 游戏分析">AI Game Analysis</h2>
+                        <button id="analyzeBtn" class="btn btn-primary btn-small" data-en="Analyze" data-zh="分析">Analyze</button>
+                    </div>
+                    <div id="aiAnalysis" class="ai-content" data-en="Click 'Analyze' to get AI insights on the current game situation." data-zh="点击"分析"获取当前游戏局势的 AI 洞察。">
+                        Click 'Analyze' to get AI insights on the current game situation.
+                    </div>
+                </div>
+
+                <div class="table-controls">
+                    <button id="addColumn" class="btn btn-small" data-en="+ Add Column" data-zh="+ 添加列">+ Add Column</button>
+                    <button id="addPlayer" class="btn btn-small" data-en="+ Add Player" data-zh="+ 添加玩家">+ Add Player</button>
+                </div>
+                <div class="table-wrapper">
+                    <table id="scoreTable" class="score-table">
+                        <thead>
+                            <tr id="tableHeader"></tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+            </main>
+
+            <!-- Right Column: Leaderboard -->
+            <aside class="leaderboard-panel">
+                <div class="section-header">
+                    <h2 data-en="Leaderboard" data-zh="排行榜">Leaderboard</h2>
+                </div>
+                <div id="leaderboardList" class="leaderboard-list"></div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="structureFileInput" accept=".json" style="display: none;">
+    <input type="file" id="dataFileInput" accept=".json" style="display: none;">
+
+    <!-- Modal for column configuration -->
+    <div id="columnModal" class="modal">
+        <div class="modal-content">
+            <h3 data-en="Configure Column" data-zh="配置列">Configure Column</h3>
+            <label>
+                <span data-en="Column Name:" data-zh="列名称：">Column Name:</span>
+                <input type="text" id="columnName" class="input-field">
+            </label>
+            <label>
+                <span data-en="Column Type:" data-zh="列类型：">Column Type:</span>
+                <select id="columnType" class="input-field">
+                    <option value="text" data-en="Text" data-zh="文本">Text</option>
+                    <option value="number" data-en="Number" data-zh="数字">Number</option>
+                    <option value="dropdown" data-en="Dropdown" data-zh="下拉选择">Dropdown</option>
+                </select>
+            </label>
+            <div id="dropdownOptions" style="display: none;">
+                <label>
+                    <span data-en="Options (comma separated):" data-zh="选项（逗号分隔）：">Options (comma separated):</span>
+                    <input type="text" id="dropdownValues" class="input-field" placeholder="Option1, Option2, Option3">
+                </label>
+            </div>
+            <div class="modal-buttons">
+                <button id="saveColumn" class="btn btn-primary" data-en="Save" data-zh="保存">Save</button>
+                <button id="cancelColumn" class="btn btn-secondary" data-en="Cancel" data-zh="取消">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "columns": [
+    {
+      "name": "Player Name",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "name": "test",
+      "type": "text",
+      "required": false
+    },
+    {
+      "name": "Result Score",
+      "required": true,
+      "type": "number"
+    }
+  ],
+  "players": [
+    {
+      "data": [
+        "wasat",
+        "wataewa",
+        "1"
+      ]
+    }
+  ],
+  "history": [],
+  "leaderboard": {},
+  "theme": "light",
+  "lang": "en"
+}

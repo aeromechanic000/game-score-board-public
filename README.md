@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-git clone https://github.com/aeromechanic000/game-score-board-public
+git clone https://github.com/aeromechanic000/game-score-board-lan
 ```
 
 ## Run
